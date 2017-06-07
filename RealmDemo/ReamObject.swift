@@ -16,5 +16,15 @@ class Employee: Object {
     dynamic var ID = 0
     dynamic var deparment = " "
     
-    
+    override static func primaryKey() -> String? {
+        return "ID"
+        
+    }
+    convenience init(name: String, deparment: String, ID: Int) {
+        self.init()
+        self.name = name
+        self.ID = ID
+        self.deparment = deparment
+    }
+
 }

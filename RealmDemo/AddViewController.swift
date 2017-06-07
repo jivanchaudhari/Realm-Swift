@@ -15,7 +15,9 @@ class AddViewController: UIViewController {
     
     @IBOutlet var deparmentTextField: UITextField!
     @IBOutlet var idTextField: UITextField!
-    
+   
+    let empData = Employee()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,28 +31,35 @@ class AddViewController: UIViewController {
     }
     func insertDataInRealm (){
         
-        let empData = Employee()
+        let enteredText = Int(idTextField.text!)
+        if enteredText == nil{
+            //String entered
+            alertWithAction(title: "Worng Text", massage: "Please Enter Number Only.")
+
+        }
+        else{
+            if empData.ID ==  enteredText! {
+                alertWithAction(title: "Same ID", massage: "Please Enter Unother ID.")
+            } else {
+                empData.name = nameTextField.text!
+                empData.ID = enteredText!
+                empData.deparment = deparmentTextField.text!
+                let realm = try! Realm()
+                
+                try! realm.write {
+                    
+                    realm.add(empData)
+                    
+                }
+            }
         
-        
-        empData.name = nameTextField.text!
-        empData.ID = Int(idTextField.text!)!
-        empData.deparment = deparmentTextField.text!
-        
-        let realm = try! Realm()
-        
-        try! realm.write {
-            
-            realm.add(empData)
-            
-            print("Added \(empData.name) in realm.")
-            
         }
         
     }
     @IBAction func saveButtonAction(_ sender: Any) {
         
         if ((nameTextField.text?.isEmpty)! || (deparmentTextField.text?.isEmpty)! || (idTextField.text?.isEmpty)!){
-           
+            
             alertWithAction(title: "Text Empty", massage: "Please Enter The Text.")
             
         } else {
